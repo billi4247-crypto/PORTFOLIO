@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="ru" class="boot-pending">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Портфолио — E&amp;S Dept.</title>
+<meta name="description" content="Портфолио E&amp;S Dept. — FDM-печать, лазерная резка, гравировка, изготовление на заказ.">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://lh3.googleusercontent.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap">
+
+<style>
+/* ─── TOKENS ─────────────────────────────────────────────────────────────── */
+:root {
+  --bg:           #0b0b0b;
+  --bg-elev:      #131313;
+  --bg-overlay:   rgba(0,0,0,.88);
+
+  --fg:           #ededeb;
+  --fg-dim:       #9a978f;
+  --fg-faint:     #5a5852;
+
+  --border:       #262626;
+  --border-hot:   #3d3d3d;
+
+  --accent:       #ff7b00;
+  --accent-ink:   #0b0b0b;
+
+  --bad:          #e34c4c;
+
+  --font-mono:  'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+  --font-sans:  'Space Grotesk', 'Inter Tight', system-ui, sans-serif;
+
+  --fs-xs:   11px;
+  --fs-sm:   13px;
+  --fs-base: 15px;
+  --fs-lg:   18px;
+  --fs-xl:   24px;
+  --fs-2xl:  44px;
+  --fs-3xl:  72px;
+
+  --lh-tight:  1.05;
+  --lh-normal: 1.45;
+
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --ease-out-quart: cubic-bezier(.25,1,.5,1);
+  --ease-out-quint: cubic-bezier(.22,1,.36,1);
+  --ease-out-expo:  cubic-bezier(.16,1,.3,1);
+  --dur:  120ms;
+
+  --header-h: 56px;
+  --filter-h: 48px;
+}
+@media (min-width: 720px) {
+  :root { --header-h: 72px; }
+}
+
+/* ─── RESET ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; background: var(--bg); color: var(--fg); }
+body { font-family: var(--font-sans); font-size: var(--fs-base); line-height: var(--lh-normal); min-height: 100dvh; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+img { display: block; max-width: 100%; }
+ul, ol { list-style: none; }
+
+/* ─── SKIP LINK ──────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute; top: -100%; left: 16px;
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  padding: 8px 16px; background: var(--bg-elev);
+  border: 1px solid var(--accent); color: var(--accent);
+  z-index: 9999; transition: top var(--dur) var(--ease);
+}
+.skip-link:focus { top: 8px; }
+
+/* ─── HEADER ─────────────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--header-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  transition: box-shadow var(--dur) var(--ease);
+}
+.site-header.scrolled { box-shadow: 0 2px 16px rgba(0,0,0,.5); }
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.logo .logo__cursor {
+  display: inline-block;
+  width: .55em; height: 1em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: caret-blink 700ms steps(2, jump-none) infinite;
+}
+.logo.is-typed .logo__cursor { display: none; }
+@keyframes caret-blink {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0; }
+}
+
+.site-nav { display: flex; align-items: center; gap: 32px; }
+.site-nav a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--fg-dim);
+  transition: color var(--dur) var(--ease);
+  position: relative;
+}
+.site-nav a:hover, .site-nav a:focus-visible { color: var(--fg); }
+.site-nav a[aria-current="page"] { color: var(--accent); }
+
+/* Mobile nav */
+.nav-menu-btn {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  color: var(--fg-dim);
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.nav-menu-btn:hover { border-color: var(--border-hot); color: var(--fg); }
+.nav-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--bg);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px;
+}
+.nav-overlay.open { display: flex; }
+.nav-overlay a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xl);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--fg-dim);
+  transition: color var(--dur) var(--ease);
+}
+.nav-overlay a:hover, .nav-overlay a[aria-current="page"] { color: var(--fg); }
+.nav-overlay .nav-close {
+  position: absolute; top: 24px; right: 24px;
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  border: 1px solid var(--border); padding: 8px 12px;
+  color: var(--fg-dim);
+}
+
+@media (max-width: 719px) {
+  .site-nav { display: none; }
+  .nav-menu-btn { display: block; }
+}
+
+/* ─── HERO ───────────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+@media (min-width: 720px) { .hero { height: 60vh; } }
+
+.hero__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: var(--bg-elev);
+  transition: opacity 400ms var(--ease);
+}
+.hero__img.error-state {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  color: var(--fg-faint);
+}
+.hero__gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(0deg, var(--bg) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Hero CAD overlay — drawn-in technical lines */
+.hero__cad {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--accent);
+  opacity: .55;
+  mix-blend-mode: screen;
+}
+.hero__cad path,
+.hero__cad line,
+.hero__cad polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+  vector-effect: non-scaling-stroke;
+}
+.hero__cad text {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out-quart);
+}
+html:not(.boot-pending) .hero__cad path,
+html:not(.boot-pending) .hero__cad line,
+html:not(.boot-pending) .hero__cad polyline {
+  transition: stroke-dashoffset 1000ms var(--ease-out-quart);
+  stroke-dashoffset: 0;
+}
+html:not(.boot-pending) .hero__cad text { opacity: .85; transition-delay: 700ms; }
+
+.hero__content {
+  position: relative; z-index: 1;
+  padding: 0 24px 48px;
+  max-width: 720px;
+  transition: opacity 200ms var(--ease);
+}
+.hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-dim);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: .35em;
+}
+.hero__eyebrow .eyebrow__dot {
+  display: inline-block;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out-quart);
+}
+html:not(.boot-pending) .hero__eyebrow .eyebrow__dot { opacity: 1; }
+
+.hero__headline {
+  font-family: var(--font-sans);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  margin-bottom: 12px;
+  text-wrap: balance;
+}
+@media (min-width: 720px) { .hero__headline { font-size: var(--fs-3xl); } }
+
+.hero__headline .word {
+  display: inline-block;
+  transform: translateY(8px);
+  opacity: 0;
+  transition: transform 520ms var(--ease-out-expo), opacity 380ms var(--ease-out-quart);
+}
+.hero__headline .word.is-shown {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero__subhead {
+  font-size: var(--fs-base);
+  color: var(--fg-dim);
+  max-width: 60ch;
+  margin-bottom: 24px;
+  text-wrap: pretty;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 320ms var(--ease-out-quart), transform 320ms var(--ease-out-quart);
+}
+html:not(.boot-pending) .hero__subhead { opacity: 1; transform: none; transition-delay: 600ms; }
+
+.hero__content .btn {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 320ms var(--ease-out-quart), transform 320ms var(--ease-out-quart),
+              border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+html:not(.boot-pending) .hero__content .btn { opacity: 1; transform: none; transition-delay: 700ms; }
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  border: 1px solid var(--border);
+  padding: 12px 24px;
+  color: var(--fg);
+  background: transparent;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+  cursor: pointer;
+}
+.btn:hover, .btn:focus-visible { border-color: var(--border-hot); color: var(--fg); }
+.btn--accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn--accent:hover, .btn--accent:focus-visible { background: var(--fg); border-color: var(--fg); color: var(--accent-ink); }
+
+/* Focus ring */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ─── FILTER BAR ─────────────────────────────────────────────────────────── */
+.filter-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 90;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.filter-bar__inner {
+  display: flex; align-items: center; gap: 12px;
+  height: var(--filter-h);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.filter-bar__inner::-webkit-scrollbar { display: none; }
+.filter-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.filter-pill {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  border: 1px solid var(--border);
+  padding: 4px 16px;
+  color: var(--fg-dim);
+  background: transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease);
+  position: relative;
+}
+.filter-pill:hover { border-color: var(--border-hot); color: var(--fg); }
+.filter-pill[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent); color: var(--accent-ink);
+}
+
+/* OK-flash badge that briefly appears on each pill during boot */
+.filter-pill .pill__ok {
+  position: absolute;
+  top: -10px; right: -8px;
+  font-size: 9px;
+  letter-spacing: .08em;
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  padding: 1px 4px;
+  pointer-events: none;
+  opacity: 0;
+}
+.filter-pill.boot-flash .pill__ok {
+  animation: ok-flash 360ms var(--ease-out-quart);
+}
+@keyframes ok-flash {
+  0%   { opacity: 0; transform: translateY(2px); }
+  20%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-2px); }
+}
+
+.filter-search {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 4px 12px;
+  min-width: 200px;
+  flex-shrink: 0;
+  transition: border-color var(--dur) var(--ease);
+}
+.filter-search::placeholder { color: var(--fg-faint); }
+.filter-search:focus { outline: 2px solid var(--accent); outline-offset: 2px; border-color: transparent; }
+.filter-counter {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--fg-faint);
+  letter-spacing: .04em;
+  padding: 8px 24px;
+  font-variant-numeric: tabular-nums;
+  display: flex; align-items: baseline; gap: .35em;
+}
+
+/* Filter bar boot reveal */
+.filter-bar, .filter-counter {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 320ms var(--ease-out-quart), transform 320ms var(--ease-out-quart);
+}
+html:not(.boot-pending) .filter-bar { opacity: 1; transform: none; transition-delay: 200ms; }
+html:not(.boot-pending) .filter-counter { opacity: 1; transform: none; transition-delay: 320ms; }
+
+/* Per-pill stagger (set via inline transition-delay in JS) */
+.filter-pill {
+  opacity: 0;
+  transform: translateY(4px);
+}
+html:not(.boot-pending) .filter-pill { opacity: 1; transform: none; }
+.filter-pill { transition: opacity 220ms var(--ease-out-quart), transform 220ms var(--ease-out-quart),
+                            border-color var(--dur) var(--ease), color var(--dur) var(--ease), background var(--dur) var(--ease); }
+
+/* ─── ODOMETER ───────────────────────────────────────────────────────────── */
+.odo {
+  display: inline-flex;
+  vertical-align: baseline;
+  font-variant-numeric: tabular-nums;
+}
+.odo__digit {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  position: relative;
+  width: .6em;
+  text-align: center;
+}
+.odo__col {
+  display: flex; flex-direction: column;
+  transition: transform 360ms var(--ease-out-quart);
+  will-change: transform;
+}
+.odo__col > span { line-height: 1; height: 1em; }
+
+/* ─── GRID ───────────────────────────────────────────────────────────────── */
+#main-content {
+  padding: 32px 24px 64px;
+  min-height: 400px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.grid-loading, .grid-error, .grid-empty {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-dim);
+  padding: 64px 0;
+  text-align: center;
+}
+.grid-error { color: var(--bad); }
+.grid-error-reset { color: var(--fg-dim); display: block; margin-top: 16px; }
+.grid-error-reset:hover { color: var(--fg); }
+
+/* ─── CARD ───────────────────────────────────────────────────────────────── */
+.card {
+  border: 1px solid transparent;
+  transition: border-color var(--dur) var(--ease);
+  position: relative;
+  isolation: isolate;
+}
+.card:hover { border-color: var(--border-hot); }
+.card__link { display: block; }
+.card__media {
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--bg-elev);
+  position: relative;
+}
+.card__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 320ms var(--ease-out-quart),
+              filter 220ms var(--ease-out-quart),
+              opacity 320ms var(--ease-out-quart);
+}
+.card:hover .card__media img {
+  transform: scale(1.025);
+  filter: saturate(.85) contrast(1.02);
+}
+.card__media .img-error {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  color: var(--fg-faint); background: var(--bg-elev);
+}
+
+/* Image-load scanline placeholder */
+.card__media::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 1px; background: var(--accent); opacity: 0;
+  z-index: 2; pointer-events: none;
+  transform: translateY(0);
+}
+.card__media.is-loading::before {
+  animation: img-scan 1100ms var(--ease-out-quart) infinite;
+  opacity: .8;
+}
+@keyframes img-scan {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: .9; }
+  90%  { opacity: .9; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Hover scanline sweep */
+.card__scan {
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 80%, transparent) 50%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(0);
+  z-index: 2;
+}
+.card.is-hot .card__scan {
+  animation: card-scan 380ms var(--ease-out-quart) forwards;
+}
+@keyframes card-scan {
+  0%   { opacity: 0; transform: translateY(0); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100%); }
+}
+
+.card__body { padding: 16px; position: relative; }
+
+/* Animated bottom rule on hover */
+.card__body::after {
+  content: "";
+  position: absolute;
+  left: 16px; right: 16px; bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 280ms var(--ease-out-quart);
+}
+.card:hover .card__body::after { transform: scaleX(1); }
+
+.card__title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  margin-bottom: 8px;
+}
+.card__desc {
+  font-size: 14px;
+  color: var(--fg-dim);
+  line-height: var(--lh-normal);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.card__meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card__cat {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-faint);
+  display: inline-flex; align-items: center; gap: .4em;
+}
+.card__cat .cat__arrow {
+  display: inline-block;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 220ms var(--ease-out-quart), transform 220ms var(--ease-out-quart);
+}
+.card:hover .card__cat .cat__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+.card__date {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Boot/FLIP states for cards */
+.card.is-flip-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.card.is-boot-hidden {
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+}
+.card.is-boot-revealing {
+  animation: card-reveal 420ms var(--ease-out-quart) forwards;
+}
+@keyframes card-reveal {
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0; transform: translateY(6px); }
+  100% { clip-path: inset(0 0 0 0);   opacity: 1; transform: translateY(0); }
+}
+
+/* ─── CTA BAND ───────────────────────────────────────────────────────────── */
+.cta-band {
+  background: var(--bg-elev);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 24px;
+  text-align: center;
+  min-height: 96px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+}
+.cta-band__headline {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+}
+.cta-band__btns { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; }
+.cta-band__phone {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--fg-dim);
+  margin-top: 4px;
+}
+.cta-band__or { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--fg-faint); text-transform: uppercase; letter-spacing: .08em; }
+.cta-band__phone a { color: var(--fg-dim); transition: color var(--dur) var(--ease); }
+.cta-band__phone a:hover { color: var(--fg); }
+
+/* ─── FOOTER ─────────────────────────────────────────────────────────────── */
+.site-footer {
+  padding: 48px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.site-footer p {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--fg-faint);
+  letter-spacing: .04em;
+  line-height: 2;
+}
+
+/* ─── MODAL ──────────────────────────────────────────────────────────────── */
+.modal-scrim {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: var(--bg-overlay);
+  overflow-y: auto;
+  padding: 5vh 16px 48px;
+  opacity: 0;
+  transition: opacity 160ms var(--ease);
+}
+.modal-scrim.open {
+  display: block;
+  animation: scrim-in 160ms var(--ease) forwards;
+}
+@keyframes scrim-in { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-panel {
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  animation: panel-in 220ms var(--ease-out-quart) forwards;
+}
+@keyframes panel-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.modal-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap; gap: 12px;
+}
+.modal-nav { display: flex; gap: 8px; }
+.modal-nav button { padding: 8px 16px; }
+
+.modal-hero {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+.modal-hero img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity 200ms var(--ease);
+}
+.modal-hero .img-error {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--fg-faint);
+}
+
+.modal-thumbs {
+  display: flex; gap: 8px;
+  padding: 12px 24px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  border-bottom: 1px solid var(--border);
+}
+.modal-thumb {
+  flex-shrink: 0;
+  width: 80px; height: 60px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease);
+}
+.modal-thumb.active { border-color: var(--accent); }
+.modal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal-body { padding: 24px; }
+.modal-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  margin-bottom: 12px;
+}
+.modal-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 24px; }
+.chip {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase; letter-spacing: .08em;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  color: var(--fg-dim);
+}
+.chip--tag { color: var(--fg-faint); }
+.chip--date { color: var(--fg-faint); font-variant-numeric: tabular-nums; }
+.modal-desc {
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--fg-dim);
+  margin-bottom: 24px;
+}
+.modal-desc p { margin-bottom: 12px; }
+.modal-desc p:last-child { margin-bottom: 0; }
+
+.spec-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+.spec-table tr { border-top: 1px solid var(--border); }
+.spec-table th, .spec-table td {
+  padding: 12px 0;
+  text-align: left;
+  font-size: var(--fs-sm);
+}
+.spec-table th {
+  font-family: var(--font-mono);
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--fg-faint);
+  width: 180px;
+  font-weight: 400;
+  padding-right: 16px;
+}
+.spec-table td { font-family: var(--font-mono); color: var(--fg-dim); font-variant-numeric: tabular-nums; }
+.spec-table td.sans { font-family: var(--font-sans); font-variant-numeric: normal; }
+.mat-chip {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: var(--fs-xs);
+  text-transform: uppercase; letter-spacing: .04em;
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  color: var(--fg-dim);
+  margin: 2px 4px 2px 0;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.mat-chip:hover { border-color: var(--border-hot); color: var(--fg); }
+
+.modal-footer-btns {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ─── TOAST ──────────────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 600;
+  font-family: var(--font-mono); font-size: var(--fs-sm);
+  text-transform: uppercase; letter-spacing: .08em;
+  background: var(--bg-elev); border: 1px solid var(--border);
+  color: var(--fg-dim);
+  padding: 12px 24px;
+  opacity: 0;
+  transition: opacity 160ms var(--ease);
+  pointer-events: none;
+}
+.toast.visible { opacity: 1; }
+
+/* ─── BOOT-PENDING (initial hidden states) ───────────────────────────────── */
+html.boot-pending .site-nav a { opacity: 0; transform: translateY(4px); }
+html.boot-pending .nav-menu-btn { opacity: 0; }
+html.boot-pending .hero__cad { opacity: 0; }
+html:not(.boot-pending) .site-nav a { opacity: 1; transform: none; transition: opacity 220ms var(--ease-out-quart), transform 220ms var(--ease-out-quart), color var(--dur) var(--ease); }
+html:not(.boot-pending) .nav-menu-btn { opacity: 1; transition: opacity 220ms var(--ease-out-quart); }
+html:not(.boot-pending) .hero__cad { opacity: .55; transition: opacity 400ms var(--ease-out-quart); }
+
+/* ─── REDUCED MOTION ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 80ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .card__media img { transition: opacity 80ms !important; }
+  .card:hover .card__media img { transform: none !important; filter: none !important; }
+  .card.is-hot .card__scan, .card__media.is-loading::before { animation: none !important; opacity: 0 !important; }
+  .logo .logo__cursor { animation: none !important; opacity: 0 !important; }
+  .card.is-boot-revealing { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">[ К ОСНОВНОМУ КОНТЕНТУ ]</a>
+
+<!-- HEADER -->
+<header class="site-header" role="banner">
+  <a href="#" class="logo" id="logo" aria-label="E&amp;S Dept. — на главную"><span class="logo__text" id="logo-text"></span><span class="logo__cursor" aria-hidden="true"></span></a>
+  <nav class="site-nav" aria-label="Основная навигация">
+    <a href="#">Главная</a>
+    <a href="#" aria-current="page">Портфолио</a>
+    <a href="https://billi4247-crypto.github.io/ESDEPTCATALOGUE/" target="_blank" rel="noopener">Материалы</a>
+    <a href="#">Заказать</a>
+  </nav>
+  <button class="nav-menu-btn" id="menu-btn" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav-overlay">[ МЕНЮ ]</button>
+</header>
+
+<!-- MOBILE NAV OVERLAY -->
+<nav class="nav-overlay" id="nav-overlay" aria-label="Мобильная навигация" aria-hidden="true">
+  <button class="btn nav-close" id="nav-close" aria-label="Закрыть меню">[ ЗАКРЫТЬ ]</button>
+  <a href="#">Главная</a>
+  <a href="#" aria-current="page">Портфолио</a>
+  <a href="https://billi4247-crypto.github.io/ESDEPTCATALOGUE/" target="_blank" rel="noopener">Материалы</a>
+  <a href="#">Заказать</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-label="Главный баннер">
+  <img class="hero__img" id="hero-img" alt="" width="1920" height="600" fetchpriority="high">
+  <div class="hero__gradient" aria-hidden="true"></div>
+
+  <!-- CAD overlay drawn-in technical lines -->
+  <svg class="hero__cad" id="hero-cad" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <!-- corner brackets TL -->
+    <polyline style="--len:60" points="40,80 40,40 80,40" />
+    <!-- corner brackets TR -->
+    <polyline style="--len:60" points="920,40 960,40 960,80" />
+    <!-- corner brackets BL -->
+    <polyline style="--len:60" points="40,520 40,560 80,560" />
+    <!-- corner brackets BR -->
+    <polyline style="--len:60" points="920,560 960,560 960,520" />
+    <!-- horizontal dimension line with tick marks -->
+    <line style="--len:480" x1="240" y1="540" x2="720" y2="540" />
+    <line style="--len:24"  x1="240" y1="528" x2="240" y2="552" />
+    <line style="--len:24"  x1="720" y1="528" x2="720" y2="552" />
+    <!-- crosshair near top-right -->
+    <line style="--len:36" x1="860" y1="120" x2="896" y2="120" />
+    <line style="--len:36" x1="878" y1="102" x2="878" y2="138" />
+    <!-- diagonal index ticks (right edge) -->
+    <line style="--len:18" x1="960" y1="240" x2="942" y2="240" />
+    <line style="--len:18" x1="960" y1="280" x2="942" y2="280" />
+    <line style="--len:18" x1="960" y1="320" x2="942" y2="320" />
+    <line style="--len:18" x1="960" y1="360" x2="942" y2="360" />
+    <text x="480" y="532" text-anchor="middle">SECTION · 480MM</text>
+    <text x="892" y="116">A1</text>
+  </svg>
+
+  <div class="hero__content" id="hero-content">
+    <p class="hero__eyebrow" id="hero-eyebrow">
+      <span class="eyebrow__lead">// СБОРКА</span>
+      <span class="eyebrow__dot" aria-hidden="true">·</span>
+      <span class="eyebrow__date" id="eyebrow-date"></span>
+      <span class="eyebrow__dot" aria-hidden="true">·</span>
+      <span class="odo" id="eyebrow-count" aria-label="количество проектов"></span>
+      <span class="eyebrow__suffix">ПРОЕКТОВ</span>
+    </p>
+    <h1 class="hero__headline" id="hero-headline"><span class="word">Что</span> <span class="word">мы</span> <span class="word">делаем</span></h1>
+    <p class="hero__subhead">FDM-печать · лазерная резка · гравировка · из любых материалов на складе</p>
+    <a href="#main-content" class="btn">[ СМОТРЕТЬ ПРОЕКТЫ ↓ ]</a>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" role="search" aria-label="Фильтрация проектов">
+  <div class="filter-bar__inner">
+    <span class="filter-label" aria-hidden="true">ПРОЕКТЫ //</span>
+    <button class="filter-pill" data-cat="" aria-pressed="true">Все<span class="pill__ok" aria-hidden="true">[OK]</span></button>
+    <button class="filter-pill" data-cat="3d" aria-pressed="false">3D<span class="pill__ok" aria-hidden="true">[OK]</span></button>
+    <button class="filter-pill" data-cat="laser" aria-pressed="false">Лазер<span class="pill__ok" aria-hidden="true">[OK]</span></button>
+    <button class="filter-pill" data-cat="engraving" aria-pressed="false">Гравировка<span class="pill__ok" aria-hidden="true">[OK]</span></button>
+    <input class="filter-search" id="filter-search" type="search" autocomplete="off" placeholder="поиск по названию, материалу, тегам…" aria-label="Поиск по проектам">
+  </div>
+</div>
+<p class="filter-counter" id="filter-counter" aria-live="polite" aria-atomic="true">
+  <span class="filter-counter__lead">показано</span>
+  <span class="odo" id="filter-counter-num"></span>
+  <span class="filter-counter__suffix">проектов</span>
+</p>
+
+<!-- GRID -->
+<main id="main-content" tabindex="-1">
+  <div class="grid" id="grid" role="list" aria-label="Проекты">
+    <div class="grid-loading" role="status" aria-live="polite">ЗАГРУЗКА ПОРТФОЛИО...</div>
+  </div>
+</main>
+
+<!-- CTA BAND -->
+<section class="cta-band" aria-label="Связаться с нами">
+  <h2 class="cta-band__headline">Хотите похожее?</h2>
+  <div class="cta-band__btns">
+    <a href="https://t.me/ES_Dept_bot" class="btn btn--accent" target="_blank" rel="noopener">[ ОФОРМИТЬ ЗАКАЗ ]</a>
+  </div>
+  <p class="cta-band__phone"><a href="tel:+79030105868">+7 903 010-58-68</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <p>E&amp;S Dept. — Engineering &amp; Solutions</p>
+  <p>Данные синхронизируются с Google Sheets</p>
+  <p>© E&amp;S Dept. · <span id="year"></span></p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-scrim" id="modal-scrim" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal-panel" id="modal-panel">
+    <div class="modal-topbar">
+      <button class="btn" id="modal-close">[ ЗАКРЫТЬ ]</button>
+      <div class="modal-nav">
+        <button class="btn" id="modal-prev">◀ предыдущий</button>
+        <button class="btn" id="modal-next">следующий ▶</button>
+      </div>
+    </div>
+    <div class="modal-hero">
+      <img id="modal-hero-img" alt="" loading="eager" decoding="async">
+    </div>
+    <div class="modal-thumbs" id="modal-thumbs" style="display:none"></div>
+    <div class="modal-body">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <table class="spec-table" id="spec-table" aria-label="Характеристики проекта"></table>
+      <div class="modal-footer-btns" id="modal-footer-btns"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── CONFIG ──────────────────────────────────────────────────────────── */
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQfd0RhBU4FW2OEhhojFxdnDJOColhcAXhEO0L8JjaT_F2tj2qXl4f6sgLGs986GosVJdEN6KHMrlzO/pub?gid=0&single=true&output=csv';
+  const CATALOGUE_BASE = 'https://billi4247-crypto.github.io/ESDEPTCATALOGUE/';
+  const BOT_USERNAME   = 'ES_Dept_bot';
+
+  /* ── UTILS ───────────────────────────────────────────────────────────── */
+  const $ = id => document.getElementById(id);
+  const qs = (sel, ctx = document) => ctx.querySelector(sel);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = () => window.matchMedia('(hover: hover)').matches;
+
+  function normaliseImageUrl(url) {
+    if (!url) return '';
+    const driveMatch = url.match(/\/file\/d\/([^/]+)/);
+    if (driveMatch) return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+    return url;
+  }
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function renderMarkdownLite(raw) {
+    if (!raw) return '';
+    let s = escapeHtml(raw);
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    const paras = s.split(/\n\n+/).filter(p => p.trim());
+    return paras.map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+  }
+  const RU_MONTHS = {'января':1,'февраля':2,'марта':3,'апреля':4,'мая':5,'июня':6,'июля':7,'августа':8,'сентября':9,'октября':10,'ноября':11,'декабря':12};
+  function parseDate(raw) {
+    if (!raw) return null;
+    raw = raw.trim().replace(/\s*г\.?$/i, '').trim(); // strip trailing "г." in Russian dates
+    if (/^\d{4}-\d{2}-\d{2}/.test(raw)) return new Date(raw);
+    const ruM = raw.match(/(\d{1,2})\s+([а-яё]+)\s+(\d{4})/i);
+    if (ruM) { const m = RU_MONTHS[ruM[2].toLowerCase()]; if (m) return new Date(+ruM[3], m-1, +ruM[1]); }
+    const dotM = raw.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+    if (dotM) return new Date(+dotM[3], +dotM[2]-1, +dotM[1]);
+    const d = new Date(raw); return isNaN(d) ? null : d;
+  }
+  function toIso(raw) {
+    const d = parseDate(raw); if (!d) return raw || '';
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
+  function formatDate(raw) {
+    if (!raw) return '';
+    const d = parseDate(raw); if (!d) return raw;
+    try { return d.toLocaleDateString('ru-RU', { year:'numeric', month:'long', day:'numeric' }); } catch { return raw; }
+  }
+
+  const CAT_LABELS = { '3d':'3D', 'laser':'Лазер', 'engraving':'Гравировка' };
+
+  // Sheet may store either English keys (3d/laser/engraving) or Russian display
+  // labels (3D/Лазер/Гравировка). Normalise to the English keys the filter UI uses.
+  function normaliseCategory(raw) {
+    const s = (raw || '').toLowerCase().trim();
+    if (!s) return '';
+    if (s === '3d' || s.startsWith('3д') || s.includes('fdm') || s.includes('печат')) return '3d';
+    if (s.includes('гравир') || s.includes('engrav')) return 'engraving';
+    if (s.includes('лазер') || s.includes('laser') || s.includes('резк')) return 'laser';
+    return s;
+  }
+
+  /* ── CSV PARSER ──────────────────────────────────────────────────────── */
+  function parseCSV(text) {
+    // Google Sheets prepends a UTF-8 BOM — strip it so the first header isn't ﻿id
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    const lines = text.split(/\r?\n/);
+    function parseLine(line) {
+      const cols = []; let cur = ''; let inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (inQ) {
+          if (c === '"' && line[i+1] === '"') { cur += '"'; i++; }
+          else if (c === '"') { inQ = false; }
+          else { cur += c; }
+        } else {
+          if (c === '"') { inQ = true; }
+          else if (c === ',') { cols.push(cur.trim()); cur = ''; }
+          else { cur += c; }
+        }
+      }
+      cols.push(cur.trim());
+      return cols;
+    }
+    const headers = parseLine(lines[0]);
+    const REQ = ['id','Название','Категория','Описание_короткое','Изображение_главное','Дата','Опубликовано'];
+    for (const col of REQ) {
+      if (!headers.includes(col)) {
+        console.error(`[portfolio] Missing required column: "${col}"`);
+        return null;
+      }
+    }
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const vals = parseLine(line);
+      const row = {};
+      headers.forEach((h, idx) => { row[h] = vals[idx] || ''; });
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function rowToProject(row) {
+    return {
+      id:          row['id'],
+      title:       row['Название'],
+      category:    normaliseCategory(row['Категория']),
+      descShort:   row['Описание_короткое'],
+      descFull:    row['Описание_полное'] || '',
+      materials:   (row['Материалы'] || '').split(',').map(s=>s.trim()).filter(Boolean),
+      dimensions:  row['Габариты'] || '',
+      turnaround:  row['Срок_изготовления'] || '',
+      imgMain:     normaliseImageUrl(row['Изображение_главное']),
+      gallery:     (row['Галерея'] || '').split('|').map(u=>normaliseImageUrl(u.trim())).filter(Boolean),
+      tags:        (row['Теги'] || '').split(',').map(s=>s.trim()).filter(Boolean),
+      date:        toIso(row['Дата']),
+      published:   row['Опубликовано'].toUpperCase() === 'TRUE',
+      featured:    (row['Featured'] || '').toUpperCase() === 'TRUE',
+    };
+  }
+
+  /* ── STATE ───────────────────────────────────────────────────────────── */
+  let allProjects  = [];
+  let filtered     = [];
+  let activeCat    = '';
+  let searchQuery  = '';
+  let modalProject = null;
+  let lastFocused  = null;
+  let searchTimer  = null;
+  let firstRender  = true;
+  let cardObserver = null;
+
+  /* ── ODOMETER ────────────────────────────────────────────────────────── */
+  class Odometer {
+    constructor(host) {
+      this.host = host;
+      this.host.classList.add('odo');
+      this.value = null;
+      this.digits = [];
+    }
+    set(value) {
+      const str = String(Math.max(0, Math.round(value)));
+      // adjust digit count
+      while (this.digits.length < str.length) {
+        const d = document.createElement('span');
+        d.className = 'odo__digit';
+        const col = document.createElement('span');
+        col.className = 'odo__col';
+        // 0..9
+        for (let i = 0; i < 10; i++) {
+          const s = document.createElement('span');
+          s.textContent = String(i);
+          col.appendChild(s);
+        }
+        d.appendChild(col);
+        this.host.appendChild(d);
+        this.digits.push(col);
+      }
+      while (this.digits.length > str.length) {
+        this.digits.pop();
+        this.host.removeChild(this.host.lastChild);
+      }
+      // animate each digit column
+      for (let i = 0; i < str.length; i++) {
+        const target = parseInt(str[i], 10);
+        this.digits[i].style.transform = `translateY(-${target}em)`;
+      }
+      this.value = value;
+    }
+    setInstant(value) {
+      const prev = this.host.style.transition;
+      this.digits.forEach(d => d.style.transition = 'none');
+      this.set(value);
+      // force reflow then restore
+      requestAnimationFrame(() => {
+        this.digits.forEach(d => d.style.transition = '');
+      });
+    }
+  }
+
+  let counterOdo = null;
+  let eyebrowOdo = null;
+
+  /* ── SCRAMBLE TEXT ───────────────────────────────────────────────────── */
+  const SCRAMBLE_CHARS = '01ABCEFGHIJKLMNOPQRSTUVWXYZ#@*$%';
+  function scrambleText(el, finalText, totalDur = 240) {
+    if (reduceMotion()) { el.textContent = finalText; return Promise.resolve(); }
+    const chars = finalText.split('');
+    const start = performance.now();
+    return new Promise(resolve => {
+      let raf;
+      function tick(now) {
+        const t = Math.min(1, (now - start) / totalDur);
+        const lockedTo = Math.floor(t * chars.length);
+        let out = '';
+        for (let i = 0; i < chars.length; i++) {
+          if (i < lockedTo || chars[i] === ' ' || chars[i] === '·') {
+            out += chars[i];
+          } else {
+            out += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          }
+        }
+        el.textContent = out;
+        if (t < 1) raf = requestAnimationFrame(tick);
+        else { el.textContent = finalText; resolve(); }
+      }
+      raf = requestAnimationFrame(tick);
+    });
+  }
+
+  /* ── TYPEWRITER ──────────────────────────────────────────────────────── */
+  function typewriter(el, text, perChar = 25) {
+    if (reduceMotion()) { el.textContent = text; return Promise.resolve(); }
+    el.textContent = '';
+    return new Promise(resolve => {
+      let i = 0;
+      const tick = () => {
+        if (i <= text.length) {
+          el.textContent = text.slice(0, i);
+          i++;
+          setTimeout(tick, perChar);
+        } else {
+          resolve();
+        }
+      };
+      tick();
+    });
+  }
+
+  /* ── BOOT SEQUENCE ───────────────────────────────────────────────────── */
+  function bootStaticPhase() {
+    const root = document.documentElement;
+
+    // populate eyebrow date
+    const today = new Date();
+    const isoToday = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+    $('eyebrow-date').textContent = isoToday;
+
+    // initialise odometers (begin at 0 so the boot rolls them up)
+    counterOdo = new Odometer($('filter-counter-num'));
+    eyebrowOdo = new Odometer($('eyebrow-count'));
+    counterOdo.set(0);
+    eyebrowOdo.set(0);
+
+    if (reduceMotion()) {
+      $('logo-text').textContent = 'E&S Dept.';
+      $('logo').classList.add('is-typed');
+      // reveal headline words instantly
+      document.querySelectorAll('.hero__headline .word').forEach(w => w.classList.add('is-shown'));
+      root.classList.remove('boot-pending');
+      return;
+    }
+
+    // 0–280ms: typewriter the logo
+    typewriter($('logo-text'), 'E&S Dept.', 26).then(() => {
+      $('logo').classList.add('is-typed');
+    });
+
+    // 200–500ms: filter pills OK-flash, staggered
+    setTimeout(() => {
+      const pills = document.querySelectorAll('.filter-pill');
+      pills.forEach((p, i) => {
+        p.style.transitionDelay = `${i * 40}ms`;
+        setTimeout(() => p.classList.add('boot-flash'), 100 + i * 70);
+      });
+    }, 200);
+
+    // 350–780ms: hero headline word stagger
+    setTimeout(() => {
+      const words = document.querySelectorAll('.hero__headline .word');
+      words.forEach((w, i) => {
+        setTimeout(() => w.classList.add('is-shown'), i * 80);
+      });
+    }, 350);
+
+    // 800ms: lift boot-pending so the late-stage CSS reveals fire
+    setTimeout(() => {
+      root.classList.remove('boot-pending');
+    }, 800);
+  }
+
+  function bootCardsPhase(count) {
+    if (reduceMotion()) return;
+    const cards = document.querySelectorAll('#grid .card');
+    cards.forEach((c, i) => {
+      c.classList.add('is-boot-hidden');
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          c.classList.remove('is-boot-hidden');
+          c.classList.add('is-boot-revealing');
+          c.addEventListener('animationend', () => {
+            c.classList.remove('is-boot-revealing');
+          }, { once: true });
+        }, i * 40);
+      });
+    });
+    // counter rolls up to final
+    if (counterOdo) counterOdo.set(count);
+    if (eyebrowOdo) eyebrowOdo.set(count);
+  }
+
+  /* ── HERO ────────────────────────────────────────────────────────────── */
+  function renderHero(projects) {
+    const withImg = projects.filter(p => p.imgMain);
+    const featured = withImg.filter(p => p.featured);
+    const pool = featured.length ? featured : (withImg.length ? withImg : projects.slice(0, 1));
+    if (!pool.length) return;
+    const p = pool[Math.floor(Math.random() * pool.length)];
+    const img = $('hero-img');
+    if (p.imgMain) { img.src = p.imgMain; img.alt = p.descShort || p.title; }
+    else { img.style.opacity = '0'; }
+    img.onerror = () => { img.style.opacity = '0'; };
+  }
+
+  function initScrollEffects() {
+    const heroContent = $('hero-content');
+    const header      = qs('.site-header');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const sy = window.scrollY;
+        const fade = Math.max(0, 1 - sy / 200);
+        heroContent.style.opacity = fade;
+        header.classList.toggle('scrolled', sy > 10);
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ── FILTER + GRID ───────────────────────────────────────────────────── */
+  function applyFilter() {
+    const prevRects = snapshotRects();
+    filtered = allProjects.filter(p => {
+      const catOk = !activeCat || p.category === activeCat;
+      const q = searchQuery.toLowerCase();
+      const searchOk = !q || [p.title, p.descShort, p.materials.join(' '), p.tags.join(' ')].join(' ').toLowerCase().includes(q);
+      return catOk && searchOk;
+    });
+    renderGrid(prevRects);
+    updateCounter();
+    syncHash();
+  }
+
+  function snapshotRects() {
+    const rects = new Map();
+    document.querySelectorAll('#grid .card').forEach(c => {
+      rects.set(c.dataset.id, c.getBoundingClientRect());
+    });
+    return rects;
+  }
+
+  function renderGrid(prevRects) {
+    const grid = $('grid');
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="grid-empty" role="status">
+        НИЧЕГО НЕ НАЙДЕНО //
+        <a href="#" class="grid-error-reset" id="reset-link">сбросить фильтры</a>
+      </div>`;
+      $('reset-link').addEventListener('click', e => { e.preventDefault(); resetFilters(); });
+      return;
+    }
+
+    if (firstRender) {
+      grid.innerHTML = '';
+      for (const p of filtered) grid.appendChild(buildCard(p));
+      bootCardsPhase(filtered.length);
+      firstRender = false;
+      return;
+    }
+
+    // FLIP filter
+    const oldNodes = new Map();
+    document.querySelectorAll('#grid .card').forEach(c => oldNodes.set(c.dataset.id, c));
+
+    // Build new ordering of nodes
+    grid.innerHTML = '';
+    const newNodes = [];
+    for (const p of filtered) {
+      let node = oldNodes.get(p.id);
+      if (node) {
+        oldNodes.delete(p.id);
+      } else {
+        node = buildCard(p);
+        node.classList.add('is-flip-hidden');
+      }
+      grid.appendChild(node);
+      newNodes.push(node);
+    }
+    // exiting nodes — animate then remove (kept off-grid)
+    const exiting = [...oldNodes.values()];
+
+    if (reduceMotion()) {
+      newNodes.forEach(n => n.classList.remove('is-flip-hidden'));
+      exiting.forEach(n => { /* already removed by innerHTML */ });
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      // FLIP play
+      newNodes.forEach((n, i) => {
+        const id = n.dataset.id;
+        const newRect = n.getBoundingClientRect();
+        const oldRect = prevRects && prevRects.get(id);
+        if (oldRect) {
+          const dx = oldRect.left - newRect.left;
+          const dy = oldRect.top  - newRect.top;
+          if (dx || dy) {
+            const anim = n.animate(
+              [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0,0)' }],
+              { duration: 320, easing: 'cubic-bezier(.25,1,.5,1)', fill: 'both' }
+            );
+            anim.onfinish = () => { try { anim.cancel(); } catch (e) {} };
+          }
+        } else {
+          // entering
+          n.classList.remove('is-flip-hidden');
+          n.classList.add('is-boot-hidden');
+          setTimeout(() => {
+            n.classList.remove('is-boot-hidden');
+            n.classList.add('is-boot-revealing');
+            n.addEventListener('animationend', () => n.classList.remove('is-boot-revealing'), { once: true });
+          }, i * 30);
+        }
+      });
+    });
+  }
+
+  function buildCard(p) {
+    const art = document.createElement('article');
+    art.className = 'card';
+    art.setAttribute('data-id', p.id);
+    art.setAttribute('data-category', p.category);
+    art.setAttribute('role', 'listitem');
+    const catLabel = CAT_LABELS[p.category] || p.category.toUpperCase();
+    art.innerHTML = `
+      <a class="card__link" href="#${p.id}" aria-label="${escapeHtml(p.title)}">
+        <figure class="card__media is-loading" aria-hidden="true">
+          <span class="card__scan" aria-hidden="true"></span>
+          <img loading="lazy" decoding="async" ${p.imgMain ? `src="${escapeHtml(p.imgMain)}"` : ''}
+            alt="${escapeHtml(p.descShort || p.title)}" width="400" height="300">
+        </figure>
+        <div class="card__body">
+          <h3 class="card__title">${escapeHtml(p.title)}</h3>
+          <p class="card__desc">${escapeHtml(p.descShort)}</p>
+          <div class="card__meta">
+            <span class="card__cat" data-cat-text="[ ${escapeHtml(catLabel)} ]">[ ${escapeHtml(catLabel)} ]<span class="cat__arrow" aria-hidden="true">→</span></span>
+            <time class="card__date" datetime="${escapeHtml(p.date)}">${escapeHtml(p.date)}</time>
+          </div>
+        </div>
+      </a>`;
+    const media = art.querySelector('.card__media');
+    const img = art.querySelector('img');
+    const stopLoading = () => media.classList.remove('is-loading');
+    const showError = (label) => {
+      stopLoading();
+      img.style.display = 'none';
+      const err = document.createElement('div');
+      err.className = 'img-error';
+      err.textContent = label || 'IMG ✕';
+      media.appendChild(err);
+    };
+    if (!p.imgMain) {
+      showError('NO IMAGE //');
+    } else {
+      img.addEventListener('load', stopLoading);
+      img.addEventListener('error', () => showError('IMG ✕'));
+      if (img.complete && img.naturalWidth > 0) stopLoading();
+    }
+
+    art.querySelector('.card__link').addEventListener('click', e => {
+      e.preventDefault();
+      lastFocused = art.querySelector('.card__link');
+      openModal(p.id);
+    });
+
+    attachCardHover(art);
+    return art;
+  }
+
+  /* ── CARD HOVER (scanline + scramble + arrow + rule) ─────────────────── */
+  function attachCardHover(card) {
+    if (!canHover()) return;
+    let scrambling = false;
+    card.addEventListener('pointerenter', () => {
+      if (reduceMotion()) return;
+      // scanline
+      card.classList.remove('is-hot');
+      // force reflow so animation restarts
+      void card.offsetWidth;
+      card.classList.add('is-hot');
+      // scramble category eyebrow
+      if (!scrambling) {
+        const catEl = card.querySelector('.card__cat');
+        if (catEl) {
+          const final = catEl.dataset.catText;
+          const arrow = catEl.querySelector('.cat__arrow');
+          // remove arrow during scramble, restore after
+          const arrowHtml = arrow ? arrow.outerHTML : '';
+          scrambling = true;
+          // Only scramble the first 8 chars (the category prefix), keep tail stable
+          const prefixLen = Math.min(final.length, 10);
+          const prefix = final.slice(0, prefixLen);
+          const tail = final.slice(prefixLen);
+          const span = document.createElement('span');
+          catEl.textContent = '';
+          catEl.appendChild(span);
+          const tailNode = document.createTextNode(tail);
+          catEl.appendChild(tailNode);
+          if (arrowHtml) catEl.insertAdjacentHTML('beforeend', arrowHtml);
+          scrambleText(span, prefix, 240).then(() => { scrambling = false; });
+        }
+      }
+    });
+    card.addEventListener('pointerleave', () => {
+      // remove the scanline class so it can replay next time
+      setTimeout(() => card.classList.remove('is-hot'), 380);
+    });
+  }
+
+  function updateCounter() {
+    if (counterOdo) counterOdo.set(filtered.length);
+  }
+
+  /* ── FILTER PILLS ────────────────────────────────────────────────────── */
+  function initFilters() {
+    document.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCat = btn.dataset.cat;
+        document.querySelectorAll('.filter-pill').forEach(b => {
+          b.setAttribute('aria-pressed', b.dataset.cat === activeCat ? 'true' : 'false');
+        });
+        applyFilter();
+      });
+    });
+    const search = $('filter-search');
+    search.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        searchQuery = search.value;
+        applyFilter();
+      }, 320);
+    });
+  }
+
+  function resetFilters() {
+    activeCat = '';
+    searchQuery = '';
+    $('filter-search').value = '';
+    document.querySelectorAll('.filter-pill').forEach(b => {
+      b.setAttribute('aria-pressed', b.dataset.cat === '' ? 'true' : 'false');
+    });
+    applyFilter();
+  }
+
+  /* ── HASH SYNC ───────────────────────────────────────────────────────── */
+  function syncHash() {
+    const params = new URLSearchParams();
+    if (activeCat) params.set('cat', activeCat);
+    history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
+  }
+
+  function readInitialHash() {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    if (cat) {
+      activeCat = cat;
+      document.querySelectorAll('.filter-pill').forEach(b => {
+        b.setAttribute('aria-pressed', b.dataset.cat === activeCat ? 'true' : 'false');
+      });
+    }
+    const mat = params.get('material');
+    if (mat) {
+      searchQuery = mat;
+      if ($('filter-search')) $('filter-search').value = mat;
+    }
+    const hash = window.location.hash.replace('#','');
+    if (hash && !hash.startsWith('cat=')) return hash;
+    return null;
+  }
+
+  /* ── MODAL ───────────────────────────────────────────────────────────── */
+  function getProjectById(id) { return allProjects.find(p => p.id === id); }
+  function getIndexInFiltered(id) { return filtered.findIndex(p => p.id === id); }
+
+  function openModal(id) {
+    const p = getProjectById(id);
+    if (!p) return;
+    modalProject = p;
+    renderModal(p);
+    const scrim = $('modal-scrim');
+    scrim.style.display = 'block';
+    scrim.setAttribute('aria-hidden', 'false');
+    scrim.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+    history.pushState({ modalId: id }, '', '#' + id);
+    setTimeout(() => { $('modal-close').focus(); }, 10);
+    updateModalNav();
+  }
+
+  function closeModal() {
+    const scrim = $('modal-scrim');
+    scrim.classList.remove('open');
+    scrim.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    modalProject = null;
+    const url = location.pathname + (location.search || '');
+    history.pushState(null, '', url);
+    if (lastFocused) { lastFocused.focus(); }
+  }
+
+  function renderModal(p) {
+    const heroImg = $('modal-hero-img');
+    const heroErr = qs('.modal-hero .img-error');
+    if (heroErr) heroErr.remove();
+    heroImg.style.opacity = '1';
+    if (p.imgMain) { heroImg.src = p.imgMain; } else { heroImg.removeAttribute('src'); }
+    heroImg.alt = p.descShort || p.title;
+    heroImg.onerror = () => {
+      heroImg.style.opacity = '0';
+      const div = document.createElement('div');
+      div.className = 'img-error';
+      div.textContent = 'IMG ✕';
+      heroImg.parentElement.appendChild(div);
+    };
+
+    const thumbs = $('modal-thumbs');
+    thumbs.innerHTML = '';
+    const allImgs = [p.imgMain, ...p.gallery].filter(Boolean);
+    if (allImgs.length > 1) {
+      thumbs.style.display = 'flex';
+      allImgs.forEach((url, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'modal-thumb' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', `Изображение ${i+1}`);
+        btn.innerHTML = `<img src="${escapeHtml(url)}" alt="" decoding="async" loading="lazy">`;
+        btn.addEventListener('click', () => {
+          heroImg.style.opacity = '0';
+          heroImg.onload = () => heroImg.style.opacity = '1';
+          if (url) heroImg.src = url;
+          thumbs.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        thumbs.appendChild(btn);
+      });
+    } else {
+      thumbs.style.display = 'none';
+    }
+
+    $('modal-title').textContent = p.title;
+
+    const meta = $('modal-meta');
+    meta.innerHTML = '';
+    const catLabel = CAT_LABELS[p.category] || p.category.toUpperCase();
+    meta.innerHTML = `<span class="chip">[ ${escapeHtml(catLabel)} ]</span>`;
+    p.tags.forEach(t => {
+      const s = document.createElement('span');
+      s.className = 'chip chip--tag';
+      s.textContent = t;
+      meta.appendChild(s);
+    });
+    if (p.date) {
+      const d = document.createElement('time');
+      d.className = 'chip chip--date';
+      d.setAttribute('datetime', p.date);
+      d.textContent = formatDate(p.date);
+      meta.appendChild(d);
+    }
+
+    $('modal-desc').innerHTML = renderMarkdownLite(p.descFull) || `<p>${escapeHtml(p.descShort)}</p>`;
+
+    const table = $('spec-table');
+    table.innerHTML = '';
+    const specs = [
+      ['Категория', `<span class="sans">${escapeHtml(catLabel)}</span>`, true],
+      ['Материалы', renderMaterials(p.materials), !!p.materials.length],
+      ['Габариты', escapeHtml(p.dimensions), !!p.dimensions],
+      ['Срок изготовления', escapeHtml(p.turnaround), !!p.turnaround],
+    ];
+    specs.filter(s => s[2]).forEach(([label, val]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<th scope="row">${escapeHtml(label)}</th><td>${val}</td>`;
+      table.appendChild(tr);
+    });
+
+    const fbBtns = $('modal-footer-btns');
+    fbBtns.innerHTML = `
+      <a href="https://t.me/${BOT_USERNAME}?start=ref_${escapeHtml(p.id)}"
+         class="btn btn--accent" target="_blank" rel="noopener">[ ЗАКАЗАТЬ ПОХОЖЕЕ ]</a>
+      <button class="btn" id="share-btn">[ ПОДЕЛИТЬСЯ ]</button>`;
+    $('share-btn').addEventListener('click', () => {
+      const url = location.origin + location.pathname + '#' + p.id;
+      navigator.clipboard.writeText(url).then(() => showToast('ССЫЛКА СКОПИРОВАНА //'));
+    });
+  }
+
+  function renderMaterials(mats) {
+    if (!mats.length) return '';
+    return mats.map(m => {
+      const encoded = encodeURIComponent(m);
+      const href = `${CATALOGUE_BASE}#mat=${encoded}`;
+      return `<a class="mat-chip" href="${escapeHtml(href)}">${escapeHtml(m)} ↗</a>`;
+    }).join('');
+  }
+
+  function updateModalNav() {
+    if (!modalProject) return;
+    const idx = getIndexInFiltered(modalProject.id);
+    $('modal-prev').disabled = idx <= 0;
+    $('modal-next').disabled = idx >= filtered.length - 1;
+    $('modal-prev').style.opacity = idx <= 0 ? '0.3' : '1';
+    $('modal-next').style.opacity = idx >= filtered.length - 1 ? '0.3' : '1';
+  }
+
+  function navigateModal(dir) {
+    if (!modalProject) return;
+    const idx = getIndexInFiltered(modalProject.id);
+    const next = filtered[idx + dir];
+    if (!next) return;
+    modalProject = next;
+    renderModal(next);
+    history.replaceState({ modalId: next.id }, '', '#' + next.id);
+    updateModalNav();
+  }
+
+  function trapFocus(e) {
+    if (!$('modal-scrim').classList.contains('open')) return;
+    const panel = $('modal-panel');
+    const focusable = [...panel.querySelectorAll('button, a, input, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.key === 'Tab') {
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+
+  function initKeyboard() {
+    document.addEventListener('keydown', e => {
+      // Cmd/Ctrl+K → focus search
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        $('filter-search').focus();
+        return;
+      }
+      if (!$('modal-scrim').classList.contains('open')) return;
+      if (e.key === 'Escape') { closeModal(); }
+      else if (e.key === 'ArrowLeft')  { navigateModal(-1); }
+      else if (e.key === 'ArrowRight') { navigateModal(+1); }
+      trapFocus(e);
+    });
+  }
+
+  function initModalControls() {
+    $('modal-close').addEventListener('click', closeModal);
+    $('modal-prev').addEventListener('click', () => navigateModal(-1));
+    $('modal-next').addEventListener('click', () => navigateModal(+1));
+    $('modal-scrim').addEventListener('click', e => {
+      if (e.target === $('modal-scrim')) closeModal();
+    });
+  }
+
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash.replace('#','');
+    if (hash && allProjects.find(p => p.id === hash)) {
+      const proj = getProjectById(hash);
+      if (proj) { modalProject = proj; renderModal(proj); updateModalNav(); $('modal-scrim').classList.add('open'); }
+    } else if ($('modal-scrim').classList.contains('open')) {
+      $('modal-scrim').classList.remove('open');
+      $('modal-scrim').setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      modalProject = null;
+    }
+  });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('visible'), 2000);
+  }
+
+  function initMobileMenu() {
+    const btn   = $('menu-btn');
+    const overlay = $('nav-overlay');
+    const close = $('nav-close');
+    btn.addEventListener('click', () => {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      btn.setAttribute('aria-expanded','true');
+      close.focus();
+    });
+    const closeFn = () => {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+      btn.setAttribute('aria-expanded','false');
+      btn.focus();
+    };
+    close.addEventListener('click', closeFn);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeFn(); });
+  }
+
+  /* ── LOAD DATA ───────────────────────────────────────────────────────── */
+  function setDataSource(kind) {
+    // kind: 'live' | 'demo'
+    const lead = qs('.eyebrow__lead');
+    if (lead) lead.textContent = kind === 'demo' ? '// ДЕМО' : '// СБОРКА';
+  }
+
+  // Public CORS proxy used only as a last-ditch when running from file:// where
+  // Google Sheets' Access-Control-Allow-Origin omits the null origin. In any
+  // hosted (http/https) environment the direct fetch works and the proxy is skipped.
+  const CORS_PROXY = 'https://corsproxy.io/?';
+  const isFileOrigin = location.protocol === 'file:';
+
+  async function tryFetchCsv(url, viaProxy = false) {
+    const target = viaProxy ? CORS_PROXY + encodeURIComponent(url) : url;
+    const res = await fetch(target, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (!rows) throw new Error('Invalid CSV schema');
+    return rows;
+  }
+
+  async function tryFetchPubHtml(url) {
+    // Fallback: scrape the pubhtml table when CSV publish is disabled
+    const htmlUrl = url.replace(/\/pub\?.*$/, '/pubhtml').replace(/\/pubhtml.*$/, '/pubhtml');
+    const res = await fetch(htmlUrl, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const table = doc.querySelector('table');
+    if (!table) throw new Error('No <table> in pubhtml');
+    const rows = [...table.querySelectorAll('tr')]
+      .map(tr => [...tr.querySelectorAll('td,th')].map(c => c.textContent.trim()));
+    // Google adds a leading column with row numbers (1, 2, 3, ...) — drop it.
+    // First row may be column letters (A B C ...) — skip if so.
+    const headerIdx = rows.findIndex(r => r.includes('id') || r.includes('Название'));
+    if (headerIdx < 0) throw new Error('No header row in pubhtml');
+    const headers = rows[headerIdx].slice(1);
+    const out = [];
+    for (let i = headerIdx + 1; i < rows.length; i++) {
+      const vals = rows[i].slice(1);
+      if (!vals.some(v => v)) continue;
+      const o = {};
+      headers.forEach((h, idx) => { o[h] = vals[idx] || ''; });
+      out.push(o);
+    }
+    return out;
+  }
+
+  async function loadProjects() {
+    const grid = $('grid');
+    if (SHEET_URL.includes('TODO')) {
+      allProjects = SAMPLE_PROJECTS;
+      setDataSource('demo');
+      finishLoad();
+      return;
+    }
+
+    let rows = null;
+    let lastErr = null;
+    try {
+      rows = await tryFetchCsv(SHEET_URL);
+      console.log('[portfolio] CSV: parsed', rows.length, 'rows');
+    } catch (err) {
+      lastErr = err;
+      console.warn('[portfolio] CSV fetch failed:', err.message, '— trying pubhtml');
+      try {
+        rows = await tryFetchPubHtml(SHEET_URL);
+        console.log('[portfolio] HTML: parsed', rows.length, 'rows');
+      } catch (err2) {
+        lastErr = err2;
+        console.warn('[portfolio] HTML fetch failed:', err2.message);
+      }
+    }
+    // Last-ditch: file:// origins fail CORS on docs.google.com. Try a public CORS proxy.
+    if (!rows && isFileOrigin) {
+      console.warn('[portfolio] running from file:// — retrying via CORS proxy');
+      try {
+        rows = await tryFetchCsv(SHEET_URL, true);
+        console.log('[portfolio] CSV-via-proxy: parsed', rows.length, 'rows');
+      } catch (err3) {
+        lastErr = err3;
+        console.warn('[portfolio] proxy fetch failed:', err3.message);
+      }
+    }
+
+    if (rows) {
+      const projects = rows
+        .map(rowToProject)
+        .filter(p => p.published && p.id)
+        .sort((a, b) => b.date.localeCompare(a.date));
+      console.log('[portfolio] published projects:', projects.length, projects.map(p => `${p.id}/${p.category}`).join(', '));
+      if (projects.length) {
+        allProjects = projects;
+        setDataSource('live');
+        finishLoad();
+        return;
+      }
+      console.warn('[portfolio] sheet returned 0 published rows — falling back to demo');
+    }
+
+    // Fallback: samples so the boot still has something to reveal
+    console.error('[portfolio] using SAMPLE_PROJECTS fallback. Last error:', lastErr && lastErr.message);
+    if (isFileOrigin) {
+      console.info('[portfolio] HINT: open this file via a local web server to load live data:\n  python -m http.server 8000   (then visit http://localhost:8000)');
+    }
+    allProjects = SAMPLE_PROJECTS;
+    setDataSource('demo');
+    finishLoad();
+    showToast(isFileOrigin ? 'ДЕМО · CORS ЗАПРЕЩАЕТ FILE:// //' : 'ОФФЛАЙН-ДЕМО //');
+  }
+
+  function finishLoad() {
+    filtered = [...allProjects];
+    renderHero(allProjects);
+    readInitialHash();
+    applyFilter();
+
+    const hash = window.location.hash.replace('#','');
+    if (hash && allProjects.find(p => p.id === hash)) {
+      requestAnimationFrame(() => openModal(hash));
+    }
+  }
+
+  /* ── SAMPLE DATA (fallback / demo) ───────────────────────────────────── */
+  const SAMPLE_PROJECTS = [
+    {
+      id: 'lithophane-cat-2024-07',
+      title: 'Литофания: кошка',
+      category: '3d',
+      descShort: 'Объёмный портрет домашнего животного, светится изнутри LED-подсветкой.',
+      descFull: 'Печать FDM из белого PLA в высоком разрешении (0.12 мм слой).\n\nИсходное фото обработано в литофанию-генераторе, толщины слоя варьируются 0.6–3.2 мм. Подставка лазерная, фанера 4 мм.',
+      materials: ['PLA-белый', 'фанера-4мм'],
+      dimensions: '150×100×3 мм + основание 160×40 мм',
+      turnaround: '4 дня',
+      imgMain: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80',
+      gallery: ['https://images.unsplash.com/photo-1598188306155-25e400eb5078?w=800&q=80'],
+      tags: ['подарок', 'светильник', 'портрет', 'кошка'],
+      date: '2024-07-12',
+      published: true, featured: true,
+    },
+    {
+      id: 'laser-map-moscow-2024-05',
+      title: 'Карта Москвы из фанеры',
+      category: 'laser',
+      descShort: 'Многоуровневая декоративная карта центра Москвы, 5 слоёв фанеры.',
+      descFull: 'Лазерная резка из фанеры 3 и 4 мм. **5 уровней глубины** создают рельеф.\n\nФинальная отделка — тёмный воск, крепление в рамку из МДФ.',
+      materials: ['фанера-4мм', 'фанера-3мм', 'МДФ-6мм'],
+      dimensions: '400×400×25 мм',
+      turnaround: '6 дней',
+      imgMain: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=800&q=80',
+      gallery: [],
+      tags: ['декор', 'подарок', 'интерьер', 'карта'],
+      date: '2024-05-20',
+      published: true, featured: true,
+    },
+    {
+      id: 'engraving-flask-2024-03',
+      title: 'Гравировка: термос с логотипом',
+      category: 'engraving',
+      descShort: 'Лазерная гравировка логотипа и именной надписи на нержавеющем термосе.',
+      descFull: 'Точечная лазерная гравировка на нержавеющей стали.\n\nЛоготип предоставлен в формате SVG, именная надпись — шрифт Futura. Глубина гравировки 0.1 мм.',
+      materials: ['нержавеющая-сталь'],
+      dimensions: 'Ø72 × 250 мм',
+      turnaround: '1 день',
+      imgMain: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80',
+      gallery: [],
+      tags: ['корпоратив', 'подарок', 'брендинг'],
+      date: '2024-03-08',
+      published: true, featured: false,
+    },
+    {
+      id: 'laser-sign-2024-02',
+      title: 'Вывеска: акрил + фанера',
+      category: 'laser',
+      descShort: 'Комбинированная вывеска с подложкой из фанеры и вырезными буквами из акрила.',
+      descFull: 'Буквы вырезаны лазером из прозрачного акрила 5 мм, подложка — фанера 10 мм.\n\n**Подсветка торцевая** через LED-профиль. Монтаж — дистанционные стойки 10 мм.',
+      materials: ['акрил-прозрачный-5мм', 'фанера-10мм'],
+      dimensions: '800×200×15 мм',
+      turnaround: '5 дней',
+      imgMain: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+      gallery: [],
+      tags: ['вывеска', 'бизнес', 'подсветка'],
+      date: '2024-02-14',
+      published: true, featured: false,
+    },
+    {
+      id: 'fdm-holder-2024-01',
+      title: 'Органайзер кабелей: стол',
+      category: '3d',
+      descShort: 'Модульный настольный органайзер для кабелей и аксессуаров, PETG.',
+      descFull: 'Печать PETG, разбита на 4 модуля. Крепление магнитами 8×2 мм.\n\nДизайн параметрический — адаптируется под конкретный стол за 30 минут.',
+      materials: ['PETG-черный'],
+      dimensions: '240×80×40 мм (один модуль)',
+      turnaround: '3 дня',
+      imgMain: 'https://images.unsplash.com/photo-1593640408182-31c228d6e012?w=800&q=80',
+      gallery: [],
+      tags: ['рабочее место', 'оргтехника', 'модульный'],
+      date: '2024-01-05',
+      published: true, featured: false,
+    },
+  ];
+
+  /* ── INIT ────────────────────────────────────────────────────────────── */
+  $('year').textContent = new Date().getFullYear();
+  bootStaticPhase();
+  initFilters();
+  initModalControls();
+  initKeyboard();
+  initMobileMenu();
+  initScrollEffects();
+  loadProjects();
+})();
+</script>
+
+</body>
+</html>

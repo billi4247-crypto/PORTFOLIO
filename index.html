@@ -1563,6 +1563,8 @@ html:not(.boot-pending) .hero__cad { opacity: .55; transition: opacity 400ms var
     renderModal(p);
     const scrim = $('modal-scrim');
     scrim.style.display = 'block';
+    // Force reflow
+    void scrim.offsetWidth;
     scrim.setAttribute('aria-hidden', 'false');
     scrim.classList.add('open');
     document.documentElement.style.overflow = 'hidden';
@@ -1575,6 +1577,10 @@ html:not(.boot-pending) .hero__cad { opacity: .55; transition: opacity 400ms var
     const scrim = $('modal-scrim');
     scrim.classList.remove('open');
     scrim.setAttribute('aria-hidden', 'true');
+    // Wait for transition to finish before hiding
+    setTimeout(() => {
+      if (!scrim.classList.contains('open')) scrim.style.display = 'none';
+    }, 200);
     document.documentElement.style.overflow = '';
     modalProject = null;
     const url = location.pathname + (location.search || '');
@@ -1738,10 +1744,22 @@ html:not(.boot-pending) .hero__cad { opacity: .55; transition: opacity 400ms var
     const hash = window.location.hash.replace('#','');
     if (hash && allProjects.find(p => p.id === hash)) {
       const proj = getProjectById(hash);
-      if (proj) { modalProject = proj; renderModal(proj); updateModalNav(); $('modal-scrim').classList.add('open'); }
+      if (proj) {
+        modalProject = proj;
+        renderModal(proj);
+        updateModalNav();
+        const scrim = $('modal-scrim');
+        scrim.style.display = 'block';
+        void scrim.offsetWidth;
+        scrim.classList.add('open');
+      }
     } else if ($('modal-scrim').classList.contains('open')) {
-      $('modal-scrim').classList.remove('open');
-      $('modal-scrim').setAttribute('aria-hidden','true');
+      const scrim = $('modal-scrim');
+      scrim.classList.remove('open');
+      scrim.setAttribute('aria-hidden','true');
+      setTimeout(() => {
+        if (!scrim.classList.contains('open')) scrim.style.display = 'none';
+      }, 200);
       document.documentElement.style.overflow = '';
       modalProject = null;
     }
